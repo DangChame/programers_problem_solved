@@ -1,7 +1,8 @@
 id_list = ["muzi", "frodo", "apeach", "neo"]
 report = ["muzi frodo","apeach frodo","frodo neo","muzi neo","apeach muzi", "muzi neo"]
-
-k = 1
+id_list = ["1", "2", "3", "4", "5", "6", "7"]
+report = ["1 3", "1 2", "6 2", "4 3", "7 1", "1 3", "3 1","4 2"]
+k = 2
 
     
 def make_dict_report(listed_report):
@@ -39,7 +40,7 @@ def remove_overlap(report):
     return temp
     
 def check_suspended(id_list, nb_of_reported, k):
-    i = 0;
+    i = 0
     while (i < len(nb_of_reported)):
         if (nb_of_reported[id_list[i]] >= k):
             nb_of_reported[id_list[i]] = 1
@@ -49,50 +50,31 @@ def check_suspended(id_list, nb_of_reported, k):
     return nb_of_reported
 
 def make_answer(id_list, dict_suspended, dict_report):
-    i = 0
-    temp = {}
-    temp_list = []
+    answer = [0 for i in range(len(id_list))]
+
     list_keys = list(dict_report.keys())
-    while (i < len(id_list)):
-        if id_list[i] in list_keys:
-            temp_list.append(id_list[i])
-        i += 1
-    i = 0
-    list_keys = temp_list
-    while (i < len(id_list)):
-        temp[id_list[i]] = 0
-        i += 1
+
     i = 0
     while (i < len(list_keys)):
         j = 0
-        while (j < len(dict_report[list_keys[i]])):
-            if (dict_suspended[dict_report[list_keys[i]][j]] == 1):
-            	temp[id_list[i]] += 1
+        while j < len(dict_report[list_keys[i]]):
+            if dict_suspended[dict_report[list_keys[i]][j]] == 1:
+                answer[id_list.index(list_keys[i])] += 1
             j += 1
         i += 1
-    i = 0
-    answer = list()
-    while (i < len(id_list)):
-        answer.append(-1)
-        i += 1
-    i = 0
-    while (i < len(id_list)):
-        answer[i] = temp[id_list[i]]
-        i += 1
     return answer
-                        
+    
 def solution(id_list, report, k):
     deoverlaped_report = remove_overlap((report))
-    print(report)
-    print(deoverlaped_report)
+
     dict_report = make_dict_report(deoverlaped_report)
-    print(dict_report)
+
     nb_of_reported = count_reported(id_list, deoverlaped_report)
-    print(nb_of_reported)
+
     dict_suspended = check_suspended(id_list, nb_of_reported, k)
-    print(dict_suspended)
+
     answer = make_answer(id_list, dict_suspended, dict_report)
-    print(answer)
+
     
     return answer
 
