@@ -2,8 +2,8 @@ def solution(nums):
 	answer = 0
 
 	print(nums)
-	nb_of_poket = len(nums)
-	nb_of_poket /= 2
+	nb_of_poket = len(nums) / 2
+
 	nums = set(nums)
 	nb_of_set = len(nums)
 	if nb_of_set >= nb_of_poket:
