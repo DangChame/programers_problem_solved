@@ -50,42 +50,67 @@ def solution_2(s):
 	return True
 
 def solution(s):
-	if len(s) % 2 == 1:
+	if len(s) % 2 == 1 or s[0] != '(' or s[-1] != ')':
 		return False
-	no_spare = []
-	while len(s) >= 2:
-		i = 1
-		temp = len(no_spare)
-		no_spare = []
-		while i < len(s):
-			if s[i-1] == '(' and s[i] == ')':
-
-				i = i + 2
-			else:
-				no_spare.append(s[i-1])
-				i += 1
-		if (s[len(s)-1] == ')' and s[len(s)-2] == '(') != 1:
-			no_spare.append(s[len(s)-1])
-
-		if len(no_spare) == temp and (temp != 0 and len(no_spare) != 0):
-				return False
-		s = "".join(no_spare)
+	final_count = [0, 0]
+	count_left = 0
+	count_right = 0
+	i = 0
+	while i < len(s):
+		if s[i] == '(':
+			count_left += 1
+		else:
+			count_right += 1
+		i += 1
+	if count_left != count_right:
+		return False
+	count_left = 0
+	count_right = 0
+	i = 0
+	flag = 'first_attempt'
+	while i < len(s):
+		while i < len(s) and s[i] == '(':
+			i += 1
+			count_left += 1
+		while i < len(s) and s[i] == ')':
+			i += 1
+			count_right += 1
+		if count_left >= count_right:
+			count_left -= count_right
+			count_right = 0
+			final_count[0] += count_left
+			count_left = 0
+		else:
+			count_right -= count_left
+			count_left = 0
+			final_count[1] += count_right
+			count_right = 0	
+		if flag == 'first_attempt' and final_count[1] > final_count[0]:
+			return False
+		else:
+			flag = 'none'
+	if final_count[0] != final_count[1]:
+		return False
 	return True
 # 테스트 부
-case1 = "())((())"	
-case2 = "((())())"	
-case3 = "))()(("
+case1 = "())((())"
+# "((()((()))))"
+#(()())
+case2 = "(()())" #3 2 1 2 1 1   1,0 / 0, 1 / 0, 0
+#case2 = "( ( ( ) ) ( ) )"  3 2 1 2  1	1  2  [1,0/0,1]
+case3 = "((()((()))))"
 case4 = "(())())("
 case5 = "(()())"
+#"( ( ) ) ) ( ( )"  2 3  / 2 1  [0,1 / 1,0]
 case6 = "(()())()("
-case7 = "())))))))"
+case7 = "("
 
 #짝수여야함,짝의 개수가 맞아야 하고,처음은 (, 마지막은)로 끝나야만 한다
 
 case = [case1,case2,case3,case4,case5,case6,case7]
 
 
-result = [False, True, False, False,True,False,False]
+result = [False, True, True, False,True,False,False]
 i = 0
 while (i < len(case)):
 	answer = solution(case[i])
