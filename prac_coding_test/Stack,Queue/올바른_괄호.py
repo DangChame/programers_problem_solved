@@ -49,7 +49,7 @@ def solution_2(s):
 			return False
 	return True
 
-def solution(s):
+def solutionqqq(s):
 	if len(s) % 2 == 1 or s[0] != '(' or s[-1] != ')':
 		return False
 	final_count = [0, 0]
@@ -92,6 +92,20 @@ def solution(s):
 	if final_count[0] != final_count[1]:
 		return False
 	return True
+
+def solution(s):
+    tmp = []
+    for i in s:
+        if len(tmp) == 0:
+            tmp.append(i)  
+        else:
+            if tmp[-1] + i == '()':
+                tmp.pop()
+                pass
+            else:
+                tmp.append(i)
+
+    return len(tmp)==0
 # 테스트 부
 case1 = "())((())"
 # "((()((()))))"
